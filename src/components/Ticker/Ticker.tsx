@@ -13,7 +13,6 @@ export default function Ticker() {
 
   useEffect(() => {
     State.setTicker = setTicker;
-
   }, []);
   return (
     <div className='ticker-container'>
