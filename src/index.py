@@ -1,4 +1,5 @@
 import os
+import sys
 import threading
 import webview
 
@@ -28,8 +29,14 @@ def get_entrypoint():
     raise Exception("No index.html found")
 
 
-entry = get_entrypoint()
+def handle_exception(exc_type, exc_value, exc_tb):
+    import traceback
+    print("some bullshit happened LMAOOOOO")
+    print("if everything looks fine, probably don't worry about this")
+    traceback.print_exception(exc_type, exc_value, exc_tb)
+sys.excepthook = handle_exception
 
+entry = get_entrypoint()
 
 if __name__ == "__main__":
     window = webview.create_window("pywebview-react boilerplate", entry, js_api=Api())

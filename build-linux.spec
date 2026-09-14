@@ -1,5 +1,19 @@
 # -*- mode: python -*-
 
+import os
+
+if (os.environ['NIX_BUILD'] == "1"):
+    from PyInstaller.utils.hooks.qt import pyqt6_library_info
+
+    qt_prefix = os.environ["QT_ENV_PREFIX"]
+    pyqt6_library_info.location.update({
+        "PrefixPath": qt_prefix,
+        "TranslationsPath": os.path.join(qt_prefix, ""),
+        "LibraryExecutablesPath": os.path.join(qt_prefix, "libexec"),
+        "DataPath": qt_prefix,
+        "PluginsPath": os.path.join(qt_prefix, "lib/qt-6/plugins"),
+    })
+
 block_cipher = None
 
 added_files = [
