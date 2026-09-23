@@ -11,9 +11,10 @@
   qtEnv,
   jq,
   nodejs,
-  runCommand
-}:
-stdenv.mkDerivation (finalAttrs: rec {
+  runCommand,
+
+  yarnBuildScript ? "build"
+}: stdenv.mkDerivation (finalAttrs: rec {
   pname = "pywebview-react-app";
   version = "0.1.0";
 
@@ -25,16 +26,16 @@ stdenv.mkDerivation (finalAttrs: rec {
   };
 
   patchedPackageJSON = runCommand "package.json"
-	  {
-	  	nativeBuildInputs = [ jq ];
-	  }
-	  # --onefile is not correct | un-venv the yarn scripts (using nix stuff)
-	  ''
-	    sed "s#build-linux\.spec --onefile#build-linux.spec#g" ${finalAttrs.src}/package.json | jq '
-	      .scripts |= map_values(gsub("\\./venv-pywebview/bin/"; ""))
-	      ' > $out
-	  '';
-  
+    {
+      nativeBuildInputs = [ jq ];
+    }
+    # --onefile is not correct | un-venv the yarn scripts (using nix stuff)
+    ''
+      sed "s#build-linux\.spec --onefile#build-linux.spec#g" ${finalAttrs.src}/package.json | jq '
+        .scripts |= map_values(gsub("\\./venv-pywebview/bin/"; ""))
+        ' > $out
+    '';
+
   postPatch = ''
     cp ${patchedPackageJSON} ./package.json
   '';
@@ -50,7 +51,7 @@ stdenv.mkDerivation (finalAttrs: rec {
   	mv dist/${pname}/* $out/bin
   	mv dist $out
   '';
-  
+
   nativeBuildInputs = [
     yarnConfigHook
     yarnBuildHook

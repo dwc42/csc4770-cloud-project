@@ -1,6 +1,5 @@
 {
   description = "pywebview-react-app";
-
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
   outputs = { self, nixpkgs }:
@@ -26,18 +25,24 @@
           "/qtwebengine_locales"
         ];
       };
-    in {
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs = [
-        	pythonEnv
-        	qtEnv
-        	pkgs.jq
-        	pkgs.nodejs
-        	pkgs.yarn
-        ];
+      
+      mkApp = yarnBuildScript: pkgs.callPackage ./package.nix {
+        inherit pythonEnv qtEnv yarnBuildScript;
       };
-      packages.${system}.default = pkgs.callPackage ./package.nix {
-      	inherit pythonEnv qtEnv;
+    in {
+      packages.${system} = rec {
+        full = mkApp "build";
+        backend = mkApp "backend";
+        container = pkgs.dockerTools.buildImage {
+          name = "pywebview-react-app";
+          tag = "latest";
+          copyToRoot = pkgs.buildEnv {
+            name = "qq";
+            paths = [ backend ];
+            pathsToLink = [ "/bin" ];
+          };
+        };
+        default = full;
       };
     };
 }
