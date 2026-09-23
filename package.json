@@ -40,7 +40,7 @@
     "start": "yarn run frontend:dev && run-script-os",
     "start:windows": ".\\venv-pywebview\\Scripts\\python src\\index.py",
     "start:default": "./venv-pywebview/bin/python src/index.py",
-    "backend": "./venv-pywebview/bin/python src/cli.py",
+    "backend": "./venv-pywebview/bin/python src/backend/cli.py",
     "zip_source": "git ls-files --cached --others --exclude-standard -z | tar -caf pywebview-react-ts-template.zip --null -T -"
   },
   "eslintConfig": {

@@ -11,6 +11,7 @@
         pywebview
         pyqt6
         pyqt6-webengine
+        numpy
       ]);
       qtEnv = pkgs.buildEnv {
         name = "qt-custom-${pkgs.qt6.qtbase.version}";
@@ -25,22 +26,23 @@
           "/qtwebengine_locales"
         ];
       };
-      
       mkApp = yarnBuildScript: pkgs.callPackage ./package.nix {
         inherit pythonEnv qtEnv yarnBuildScript;
       };
     in {
       packages.${system} = rec {
         full = mkApp "build";
-        backend = mkApp "backend";
+        backend = pkgs.callPackage ./python.nix { inherit pythonEnv; };
         container = pkgs.dockerTools.buildImage {
-          name = "pywebview-react-app";
+          name = "cli";
           tag = "latest";
           copyToRoot = pkgs.buildEnv {
             name = "qq";
             paths = [ backend ];
-            pathsToLink = [ "/bin" ];
+            pathsToLink = [ "/bin"  ];
+            extraPrefix = "/app";
           };
+          config.Cmd = [ "/app/bin/cli" ];
         };
         default = full;
       };

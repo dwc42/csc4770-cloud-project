@@ -5,7 +5,7 @@ WORKDIR /build
 
 RUN nix \
 	--extra-experimental-features "nix-command flakes" \
-	build .
+	build ".#backend"
 
 RUN mkdir /build/nix-store-closure
 RUN cp -R $(nix-store -qR /build/result) /build/nix-store-closure
@@ -18,4 +18,4 @@ WORKDIR /app
 COPY --from=builder /build/nix-store-closure /nix/store
 COPY --from=builder /build/result /app
 
-CMD [ "/app/bin/pywebview-react-app" ]
+CMD [ "/app/bin/cli" ]

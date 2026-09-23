@@ -52,6 +52,8 @@
   	mv dist $out
   '';
 
+  inherit yarnBuildScript;
+
   nativeBuildInputs = [
     yarnConfigHook
     yarnBuildHook
