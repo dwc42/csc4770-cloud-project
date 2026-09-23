@@ -42,7 +42,6 @@ class Matrix:
     def __str__(self):
         return str(self.matrix)
 
-    # Used by developers/debugging (repr() or falling back if __str__ is missing)
     def __repr__(self):
         return str(self.matrix)
 
