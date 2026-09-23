@@ -46,7 +46,7 @@ class Matrix:
         return str(self.matrix)
 
     # splits Matrix into specified parts
-    def split_matrix(self, parts):
+    def split_matrix(self, parts: int):
         rows = self.matrix.shape[0]
         indices = numpy.linspace(0, rows, parts + 1, dtype=int)
 
