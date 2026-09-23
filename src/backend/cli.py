@@ -1,6 +1,6 @@
 """Command-line interface for generating a randomized matrix."""
 
-from matrix import Matrix
+from libraries.matrix import Matrix
 
 
 def parse_positive_int(value: str, name: str) -> int:

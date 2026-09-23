@@ -6,7 +6,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src", "backend"))
 
 import pytest
-from cli import parse_positive_int, build_random_matrix
+from backend.cli import parse_positive_int, build_random_matrix
 
 
 class TestParsePositiveInt:
