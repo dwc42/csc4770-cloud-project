@@ -46,6 +46,12 @@ class Matrix:
     def __repr__(self):
         return str(self.matrix)
 
+    # splits Matrix into specified parts
+    def split_matrix(self, parts):
+        rows = self.matrix.shape[0]
+        indices = numpy.linspace(0, rows, parts + 1, dtype=int)
+
+        return [self.matrix[indices[i]:indices[i+1], :] for i in range(parts)]
 
 # m1 = Matrix(4, 4).randomizeInt((1, 10))
 # m2 = Matrix(4, 4).randomizeInt((1, 10))
